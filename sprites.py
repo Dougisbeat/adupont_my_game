@@ -11,8 +11,9 @@ vec = pg.math.Vector2
 # player class
 
 class Player(Sprite):
-    def __init__(self):
+    def __init__(self, game):
         Sprite.__init__(self)
+        self.game = game
         self.image = pg.Surface((50,50))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
@@ -33,13 +34,17 @@ class Player(Sprite):
             self.acc.y = PLAYER_ACC
         if keystate[pg.K_d]:
             self.acc.x = PLAYER_ACC
+        
     # ...
+    def jump(self):
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
     def inbounds(self):
         if self.rect.x > WIDTH - 50:
             self.pos.x = WIDTH - 25
             self.vel.x = 0
         
         if self.rect.x < 0:
+            self.pos.x = 25
             self.vel.x = 0
             
         if self.rect.y > HEIGHT - 50:
@@ -47,6 +52,7 @@ class Player(Sprite):
             self.vel.y = 0
             
         if self.rect.y < 0:
+            self.pos.y = 25
             self.vel.y = 0
             
 

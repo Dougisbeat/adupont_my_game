@@ -12,3 +12,4 @@ RAIN = (randint(0,255), randint(0,255), randint(0,255))
 FPS = 60
 RUNNING = True
 SCORE = 0
+PAUSE = False
