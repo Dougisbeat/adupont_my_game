@@ -42,7 +42,25 @@ class Game:
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
+        self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50,RED, "normal")
+        self.plat2 = Platform(300, 10, 300, 300, WHITE, "bouncy")
+        self.plat3 = Platform(300, 10, 0, 100, BLACK, "icy")
+        self.plat4 = Platform(300, 10, 400, 500, WHITE, "bouncy")
         self.all_sprites.add(self.player)
+        self.all_sprites.add(self.plat1)
+        self.platforms.add(self.plat1)
+        self.all_sprites.add(self.plat2)
+        self.platforms.add(self.plat2)
+        self.all_sprites.add(self.plat3)
+        self.platforms.add(self.plat3)
+        self.all_sprites.add(self.plat4)
+        self.platforms.add(self.plat4)
+        self.all_sprites.add(self.player)
+       
+        # for plat in PLATFORM_LIST:
+        #     p = Platform(*plat)
+        #     self.all_sprites.add(p)
+        #     self.platforms.add(p)
         for i in range(0,10):
             m = Mob(20,20,(0,255,0))
             self.all_sprites.add(m)
@@ -68,6 +86,22 @@ class Game:
 
     def update(self):
         self.all_sprites.update()
+        if self.player.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+            if hits:
+                if hits[0].variant == "dissapearing":
+                    hits[0].kill()
+                elif hits[0].variant == "icy":
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = 0
+                    PLAYER_FRICTION = -0.1
+                elif hits[0].variant == "bouncy":
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = -PLAYER_JUMP
+                else:
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = 0
+
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen) 
