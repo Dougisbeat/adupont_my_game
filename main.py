@@ -10,6 +10,14 @@
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 # Sources: 
 
+'''
+Game structure
+Goals: Create a health bar 
+create a score 
+create waves of enemies
+
+'''
+
 # import libs
 import pygame as pg
 import random
@@ -38,14 +46,16 @@ class Game:
     def new(self):
         # starting a new game
         self.score = 0
+        self.health = 100
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
-        self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50,RED, "normal")
-        self.plat2 = Platform(300, 10, 300, 300, WHITE, "bouncy")
-        self.plat3 = Platform(300, 10, 0, 100, BLACK, "icy")
-        self.plat4 = Platform(300, 10, 400, 500, WHITE, "bouncy")
+        self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50,RED, "lava")
+        self.plat2 = Platform(150, 10, 300, 300, GREEN, "bouncy")
+        self.plat3 = Platform(150, 10, 40, 150, BLACK, "win")
+        self.plat4 = Platform(150, 10, 400, 500, WHITE, "icy")
+        self.plat5 = Platform(150, 10, 700, 530, WHITE, "normal")
         self.all_sprites.add(self.player)
         self.all_sprites.add(self.plat1)
         self.platforms.add(self.plat1)
@@ -55,16 +65,19 @@ class Game:
         self.platforms.add(self.plat3)
         self.all_sprites.add(self.plat4)
         self.platforms.add(self.plat4)
+        self.all_sprites.add(self.plat5)
+        self.platforms.add(self.plat5)
         self.all_sprites.add(self.player)
        
         # for plat in PLATFORM_LIST:
         #     p = Platform(*plat)
         #     self.all_sprites.add(p)
         #     self.platforms.add(p)
-        for i in range(0,10):
+        for i in range(0,20):
             m = Mob(20,20,(0,255,0))
-            self.all_sprites.add(m)
             self.enemies.add(m)
+            self.all_sprites.add(m)
+            
         self.run()
     def run(self):
         self.playing = True 
@@ -98,13 +111,31 @@ class Game:
                 elif hits[0].variant == "bouncy":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
+                elif hits[0].variant == "lava":
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = 0
+                    self.health -= 1  
+                elif hits[0].variant == "win":
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = 0
+                    Win == True  
                 else:
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
+                    
+                    
+        
 
     def draw(self):
         self.screen.fill(BLUE)
-        self.all_sprites.draw(self.screen) 
+        self.all_sprites.draw(self.screen)
+        self.draw_text("Health: " + str(self.health), 22, WHITE, WIDTH/2, HEIGHT/10) 
+        if self.health <= 0:
+            self.draw_text("YOU LOSE", 53, RED, WIDTH/2, HEIGHT/2)
+        if Win == True:
+            self.draw_text("You WIN!", 53, GREEN, WIDTH/2, HEIGHT/2)
+            print("hi")
+        
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):
         font_name = pg.font.match_font('comic sans')

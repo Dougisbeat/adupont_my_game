@@ -17,7 +17,7 @@ class Player(Sprite):
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = vec(WIDTH/2, HEIGHT/2)
+        self.pos = vec(700, 510)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.cofric = 0.1
@@ -64,7 +64,10 @@ class Player(Sprite):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
             if hits:
                 self.game.score += 1
-                print(SCORE)
+                print(SCORE) 
+
+                
+            
     def update(self):
         # self.mob_collide()
         self.inbounds()
