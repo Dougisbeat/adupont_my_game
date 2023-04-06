@@ -12,9 +12,10 @@
 
 '''
 Game structure
-Goals: Create a health bar 
-create a score 
-create waves of enemies
+Goals: 
+Create a health bar 
+create a win/lose system 
+
 
 '''
 
@@ -52,9 +53,9 @@ class Game:
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
         self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50,RED, "lava")
-        self.plat2 = Platform(150, 10, 300, 300, GREEN, "bouncy")
-        self.plat3 = Platform(150, 10, 40, 150, BLACK, "win")
-        self.plat4 = Platform(150, 10, 400, 500, WHITE, "icy")
+        self.plat2 = Platform(50, 10, 300, 300, WHITE, "normal")
+        self.plat3 = Platform(75, 10, 40, 150, BLACK, "win")
+        self.plat4 = Platform(75, 10, 400, 500, GREEN, "bouncy")
         self.plat5 = Platform(150, 10, 700, 530, WHITE, "normal")
         self.all_sprites.add(self.player)
         self.all_sprites.add(self.plat1)
@@ -76,7 +77,7 @@ class Game:
         for i in range(0,20):
             m = Mob(20,20,(0,255,0))
             self.enemies.add(m)
-            self.all_sprites.add(m)
+            # self.all_sprites.add(m)
             
         self.run()
     def run(self):
@@ -96,10 +97,13 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     self.player.jump()
+                if event.key == pg.K_r:
+                    self.new()
 
     def update(self):
         self.all_sprites.update()
         if self.player.vel.y > 0:
+            # 
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
                 if hits[0].variant == "dissapearing":
@@ -107,7 +111,7 @@ class Game:
                 elif hits[0].variant == "icy":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
-                    PLAYER_FRICTION = -0.1
+                    PLAYER_FRICTION == -0.1
                 elif hits[0].variant == "bouncy":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
@@ -118,7 +122,7 @@ class Game:
                 elif hits[0].variant == "win":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
-                    Win == True  
+                    self.score = 1
                 else:
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
@@ -129,12 +133,16 @@ class Game:
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen)
-        self.draw_text("Health: " + str(self.health), 22, WHITE, WIDTH/2, HEIGHT/10) 
+        self.draw_text("Health: " + str(self.health), 22, RED, WIDTH/1.25, HEIGHT/10) 
+        
+
         if self.health <= 0:
-            self.draw_text("YOU LOSE", 53, RED, WIDTH/2, HEIGHT/2)
-        if Win == True:
-            self.draw_text("You WIN!", 53, GREEN, WIDTH/2, HEIGHT/2)
-            print("hi")
+            self.draw_text("YOU LOSE", 150, RED, WIDTH/2, HEIGHT/3)
+            self.draw_text("press 'r' to restart", 50, WHITE, WIDTH/2, HEIGHT/1.5)
+            
+        if self.score == 1:
+            self.draw_text("YOU WIN!", 150, (randint(0,255), randint(0,255), randint(0,255) ), WIDTH/2, HEIGHT/3)
+            self.draw_text("press 'r' to restart", 50, WHITE, WIDTH/2, HEIGHT/1.5)
         
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):

@@ -4,20 +4,22 @@ HEIGHT = 600
 PLAYER_ACC = 1
 PLAYER_FRICTION = -0.3
 PLAYER_JUMP = 20
-PLAYER_GRAV = 0.8
+PLAYER_GRAV = 1
 MOB_ACC = 2
 BLACK = (0,0,0)
 BLUE = (50,50,255)
 RED = (255,50,50)
 WHITE = (255,255,255)
 GREEN = (50, 255, 50)
-RAIN = (randint(0,255), randint(0,255), randint(0,255))
+DGREEN = (47, 72, 62)
+
 FPS = 60
 RUNNING = True
 SCORE = 0
 PAUSE = False
 HEALTH = 100
-Win = False
+Win = True
+
 
 # # Starting platforms
 # PLATFORM_LIST = [(0, HEIGHT - 40, WIDTH, 40, (200,200,200), "normal"),

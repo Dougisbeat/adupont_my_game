@@ -4,7 +4,9 @@ from settings import *
 from random import randint
 
 
+
 vec = pg.math.Vector2
+
 
 # player class
 
@@ -28,13 +30,7 @@ class Player(Sprite):
             self.acc.x = -PLAYER_ACC
         if keystate[pg.K_d]:
             self.acc.x = PLAYER_ACC
-        # if keystate[pg.K_p]:
-        #     if PAUSED == False:
-        #         PAUSED = True
-        #         print(PAUSED)
-        #     else:
-        #         PAUSED = False
-        #         print(PAUSED)
+        
     # ...
     def jump(self):
         self.rect.x += 1
