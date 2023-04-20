@@ -15,8 +15,8 @@ class Player(Sprite):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
-        self.image = pg.Surface((50,50))
-        self.image.fill(BLACK)
+        self.image = pg.image.load('rock.png').convert_alpha()
+        self.image = pg.transform.scale(self.image, (70,70))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
         self.pos = vec(700, 510)
@@ -38,6 +38,7 @@ class Player(Sprite):
         self.rect.x -= 1
         if hits:
             self.vel.y = -PLAYER_JUMP
+    
     
     def inbounds(self):
         if self.rect.x > WIDTH - 50:

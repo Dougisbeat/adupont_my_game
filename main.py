@@ -46,12 +46,15 @@ class Game:
 
     def new(self):
         # starting a new game
+        # determines score
         self.score = 0
-        self.health = 100
+        # determines health
+        self.health = 10
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
+        # defines platforms then adds them to sprites then draws them 
         self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50,RED, "lava")
         self.plat2 = Platform(50, 10, 300, 300, WHITE, "normal")
         self.plat3 = Platform(75, 10, 40, 150, BLACK, "win")
@@ -95,8 +98,10 @@ class Game:
                     self.playing = False
                 self.running = False
             if event.type == pg.KEYDOWN:
+                # allows player to jump
                 if event.key == pg.K_SPACE:
                     self.player.jump()
+                # allows player to restart
                 if event.key == pg.K_r:
                     self.new()
 
@@ -114,7 +119,8 @@ class Game:
                     PLAYER_FRICTION == -0.1
                 elif hits[0].variant == "bouncy":
                     self.player.pos.y = hits[0].rect.top
-                    self.player.vel.y = -PLAYER_JUMP
+                    # better than a jump so he go higher
+                    self.player.vel.y = -PLAYER_BOOST
                 elif hits[0].variant == "lava":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
@@ -133,13 +139,14 @@ class Game:
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen)
+        # shows health bar
         self.draw_text("Health: " + str(self.health), 22, RED, WIDTH/1.25, HEIGHT/10) 
         
-
+        # shows if u lose
         if self.health <= 0:
             self.draw_text("YOU LOSE", 150, RED, WIDTH/2, HEIGHT/3)
-            self.draw_text("press 'r' to restart", 50, WHITE, WIDTH/2, HEIGHT/1.5)
-            
+            self.new()
+        # shows if u win   
         if self.score == 1:
             self.draw_text("YOU WIN!", 150, (randint(0,255), randint(0,255), randint(0,255) ), WIDTH/2, HEIGHT/3)
             self.draw_text("press 'r' to restart", 50, WHITE, WIDTH/2, HEIGHT/1.5)
