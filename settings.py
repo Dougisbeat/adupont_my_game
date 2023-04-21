@@ -1,6 +1,8 @@
 from random import randint
+# screen size
 WIDTH = 800
 HEIGHT = 600
+# player mechanics 
 PLAYER_ACC = 1
 PLAYER_FRICTION = -0.3
 PLAYER_JUMP = 20
@@ -8,13 +10,14 @@ PLAYER_JUMP = 20
 PLAYER_BOOST = 25
 PLAYER_GRAV = 1
 MOB_ACC = 2
+# colors
 BLACK = (0,0,0)
 BLUE = (50,50,255)
 RED = (255,50,50)
 WHITE = (255,255,255)
 GREEN = (50, 255, 50)
 DGREEN = (47, 72, 62)
-
+# game mechanics 
 FPS = 60
 RUNNING = True
 SCORE = 0

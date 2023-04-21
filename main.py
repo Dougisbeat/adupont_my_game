@@ -50,6 +50,7 @@ class Game:
         self.score = 0
         # determines health
         self.health = 10
+        # places sprites into sprite groups to define other sprites 
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
@@ -77,12 +78,14 @@ class Game:
         #     p = Platform(*plat)
         #     self.all_sprites.add(p)
         #     self.platforms.add(p)
+        # chooses amount of mobs  then puts them into the game
         for i in range(0,20):
             m = Mob(20,20,(0,255,0))
             self.enemies.add(m)
             # self.all_sprites.add(m)
-            
+        # runs the game
         self.run()
+    # says what run will do once called
     def run(self):
         self.playing = True 
         while self.playing: 
@@ -90,7 +93,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
-
+    # says what will happen if the user does something like clicking the big red x
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -104,11 +107,11 @@ class Game:
                 # allows player to restart
                 if event.key == pg.K_r:
                     self.new()
-
+    # updates each sprite 60 times every second
     def update(self):
         self.all_sprites.update()
         if self.player.vel.y > 0:
-            # 
+            # defines the types of platforms 
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
                 if hits[0].variant == "dissapearing":
@@ -135,7 +138,7 @@ class Game:
                     
                     
         
-
+    # draws text onto the screen if the requirement is met
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen)
@@ -152,6 +155,7 @@ class Game:
             self.draw_text("press 'r' to restart", 50, WHITE, WIDTH/2, HEIGHT/1.5)
         
         pg.display.flip()
+    # makes it easier to add text since it is already defined and you just have to input parameters 
     def draw_text(self, text, size, color, x, y):
         font_name = pg.font.match_font('comic sans')
         font = pg.font.Font(font_name, size)
@@ -159,6 +163,7 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x,y)
         self.screen.blit(text_surface, text_rect)
+    # gets the position of the mouse 
     def get_mouse_now(self):
         x,y = pg.mouse.get_pos()
         return (x,y)

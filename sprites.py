@@ -15,6 +15,7 @@ class Player(Sprite):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
+        # makes the player the rock
         self.image = pg.image.load('rock.png').convert_alpha()
         self.image = pg.transform.scale(self.image, (70,70))
         self.rect = self.image.get_rect()
@@ -24,6 +25,7 @@ class Player(Sprite):
         self.acc = vec(0,0)
         self.cofric = 0.1
         self.canjump = False
+    # player input to move the character
     def input(self):
         keystate = pg.key.get_pressed()
         if keystate[pg.K_a]:
@@ -31,7 +33,7 @@ class Player(Sprite):
         if keystate[pg.K_d]:
             self.acc.x = PLAYER_ACC
         
-    # ...
+    # allows the player to jump
     def jump(self):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
@@ -39,7 +41,7 @@ class Player(Sprite):
         if hits:
             self.vel.y = -PLAYER_JUMP
     
-    
+    # determines the inbounds of the game
     def inbounds(self):
         if self.rect.x > WIDTH - 50:
             self.pos.x = WIDTH - 25
@@ -56,7 +58,7 @@ class Player(Sprite):
         if self.rect.y < 0:
             self.pos.y = 25
             self.vel.y = 0
-            
+    # sees if you hit a mob and what will happen if you do
     def mob_collide(self):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
             if hits:
@@ -64,7 +66,7 @@ class Player(Sprite):
                 print(SCORE) 
 
                 
-            
+    # updates the player with the FPS
     def update(self):
         # self.mob_collide()
         self.inbounds()
@@ -77,9 +79,10 @@ class Player(Sprite):
         self.pos += self.vel + 0.5 * self.acc
         self.rect.midbottom = self.pos
         
-
+# mob class
 class Mob(Sprite):
     def __init__(self,width,height, color):
+        # mob properties
         Sprite.__init__(self)
         self.width = width
         self.height = height
@@ -92,7 +95,7 @@ class Mob(Sprite):
         self.vel = vec(randint(1,5),randint(1,5))
         self.acc = vec(1,1)
         self.cofric = 0.01
-    # ...
+    # determines mob inbounds
     def inbounds(self):
         if self.rect.x > WIDTH:
             self.vel.x *= -1
@@ -106,6 +109,7 @@ class Mob(Sprite):
         if self.rect.y > HEIGHT:
             self.vel.y *= -1
             # self.acc = self.vel * -self.cofric
+    # updates the mob with the FPS
     def update(self):
         self.inbounds()
         # self.pos.x += self.vel.x
@@ -117,6 +121,7 @@ class Mob(Sprite):
 
 class Platform(Sprite):
     def __init__(self, width, height, x, y, color, variant):
+        # platform properties
         Sprite.__init__(self)
         self.width = width
         self.height = height
